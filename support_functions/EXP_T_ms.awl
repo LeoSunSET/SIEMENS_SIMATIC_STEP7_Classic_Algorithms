@@ -1,8 +1,8 @@
-FUNCTION "TOFF_D_ms" : VOID
-TITLE =OFF-DELAY_TIMER_MSEC
+FUNCTION "EXP_T_ms" : VOID
+TITLE =EXTENDED_PULSE_TIMER_MSEC
 
 //################################################################################
-//#                            OFF-DELAY_TIMER_MSEC                              #
+//#                          EXTENDED_PULSE_TIMER_MSEC                           #
 //################################################################################
 //
 //Revisions history
@@ -14,7 +14,7 @@ TITLE =OFF-DELAY_TIMER_MSEC
 //!Rev!Date    !Description                    !Drawn         !Checked       !
 //+--------------------------------------------------------------------------+
 //
-//Function         : OFF-DELAY timer, with 1-millisecond time base.
+//Function         : EXTENDED PULSE timer, with 1-millisecond time base.
 //
 //Calling block    : ANY
 //
@@ -26,9 +26,9 @@ TITLE =OFF-DELAY_TIMER_MSEC
 //
 //Remarks          :
 
-AUTHOR : PASTORUT
+AUTHOR : LEONARDO
 FAMILY : TIMING
-NAME : SF_T_MS
+NAME : SE_T_MS
 VERSION : 1.0
 
 
@@ -44,28 +44,38 @@ BEGIN
 NETWORK
 TITLE =
 
-      AN    #START;         // If the Command Bit is ON, force the
-      JC    C_ON;           // time accumulator to the Max DINT value
-      SET   ;               //  and exit with boolean status = ON.
+      A     #START;         // If the Command Bit is OFF and the
+      JC    TIMI;           // time count is zero (time expired),
+      A(    ;               // force the time accumulator to +2^31
+      L     L#0;            // and exit with boolean status = OFF.
+      L     #ACCUM; 
+      ==D   ; 
+      )     ; 
+      O(    ; 
+      L     L#2147483647; 
+      ==D   ; 
+      )     ; 
+      JCN   TIMI; 
+      CLR   ; 
       SAVE  ; 
       L     L#2147483647; 
       T     #ACCUM; 
       BEU   ; 
-C_ON: L     #ACCUM; 
-      L     #PRESET; 
+TIMI: L     #ACCUM;         // If the Accumulator is > Preset,
+      L     #PRESET;        // force it to the Preset Value
       >D    ; 
-      JCN   TIMI; 
-      T     #ACCUM; 
-TIMI: L     #ACCUM;         // Decrease the time accumulator by the
+      JCN   DECR; 
+      T     #ACCUM;         // Then decrease the Accumulator
+DECR: L     #ACCUM;         // Decrease the time accumulator by the
       L     #OB_TIME_MS;    // milliseconds since last OB1 call
       -D    ; 
       T     #ACCUM;         // The BR is TRUE if the accumulated
-      L     L#0;            // value is > 0, otherwise the
-      >D    ;               // accumulator is forced to ZERO
-      =     L      0.0;     // to prevent further negative 
-      JC    OUTP;           // accumulation that could result in 
-      T     #ACCUM;         // rollover of the 16-bit accumulator
-OUTP: A     L      0.0;     // and consequent wrong timer output.
-      SAVE  ; 
+      L     L#0;            // value is >0, otherwise force the 
+      >D    ;               // accumulator to ZERO to prevent
+      =     L      0.0;     // further accumulation that could result
+      JC    OUTP;           // in rollover of the 32-bit accumulator  
+      T     #ACCUM;         // and consequent wrong timer output.
+OUTP: A     L      0.0;     // The FC output is true when the count
+      SAVE  ;               // is ON.
 
 END_FUNCTION
