@@ -1,0 +1,70 @@
+FUNCTION "TON_D_ms" : VOID
+TITLE =ON-DELAY_TIMER_MSEC
+
+//################################################################################
+//#                            ON-DELAY_TIMER_MSEC                               #
+//################################################################################
+//
+//Revisions history
+//+--------------------------------------------------------------------------+
+//! 2 !        !                               !              !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//! 1 !19/09/21!ISSUE                          ! Leonardo     !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//!Rev!Date    !Description                    !Drawn         !Checked       !
+//+--------------------------------------------------------------------------+
+//
+//Function         : ON-DELAY timer, with 1-millisecond time base.
+//
+//Calling block    : ANY
+//
+//Used DB          : 
+//                     
+//Used Flags       : 
+// 
+//Used prog.block  : 
+//
+//Remarks          :
+
+AUTHOR : LEONARDO
+FAMILY : TIMING
+NAME : SD_T_MS
+VERSION : 1.0
+
+VAR_INPUT
+  START : BOOL ;	            //Timer Start
+  PRESET : DINT ;	            //Timer Preset Value (milliseconds)
+  OB_TIME_MS : INT ;	      //Time since last OB scan (milliseconds)
+END_VAR
+VAR_IN_OUT
+  ACCUM : DINT ;              //Time Accumulator (milliseconds)
+END_VAR
+BEGIN
+NETWORK
+TITLE =
+
+      A     #START;         // If the Command Bit is OFF, force the
+      JC    C_ON;           // time accumulator to the MAx DINT value  
+      CLR   ;               //  and exit with boolean status = OFF.
+      SAVE  ; 
+      L     L#2147483647; 
+      T     #ACCUM; 
+      BEU   ; 
+C_ON: L     #ACCUM; 
+      L     #PRESET; 
+      >D    ; 
+      JCN   TIMI; 
+      T     #ACCUM; 
+TIMI: L     #ACCUM;         // Decrease the time accumulator by the
+      L     #OB_TIME_MS;    // milliseconds since last OB1 call
+      -D    ; 
+      T     #ACCUM;         // If the accumulated count is <=0,
+      L     L#0;            // then the boolean status is set ON
+      <=D   ;               // and the accumulator is forced to
+      =     L      0.0;     // ZERO to prevent further negative
+      JCN   OUTP;           // accumulation that could result in
+      T     #ACCUM;         // rollover of the 16-bit accumulator
+OUTP: A     L      0.0;     // and consequent wrong timer output.
+      SAVE  ; 
+
+END_FUNCTION
