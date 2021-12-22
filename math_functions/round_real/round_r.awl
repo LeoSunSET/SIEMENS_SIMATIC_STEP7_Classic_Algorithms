@@ -1,0 +1,92 @@
+FUNCTION "ROUND_R" : VOID
+TITLE = ROUND REAL NUMBER TO N USER DEFINED DECIMAL PLACES
+
+//################################################################################
+//#              ROUND REAL NUMBER TO N USER DEFINED DECIMAL PLACES              #
+//################################################################################
+//
+//Revisions history
+//+--------------------------------------------------------------------------+
+//! 2 !        !                               !              !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//! 1 !19/09/21!ISSUE                          ! Leonardo     !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//!Rev!Date    !Description                    !Drawn         !Checked       !
+//+--------------------------------------------------------------------------+
+//
+//Function         : This block rounds a real value to a N user defined decimal 
+//                  place. The result is rounded to the closest value.
+//                  Eg.: 1.68345623 round to 3 decimal place = 1.683
+//                  Useful when values changes rapidly and you want to keep only
+//                  the last n relevant/invariant decimal places.
+//
+//Calling block    : ANY
+//
+//Used DB          : 
+//                     
+//Used Flags       : 
+// 
+//Used prog.block  : 
+//
+//Remarks          :
+
+
+AUTHOR : LEONARDO
+FAMILY : MATH
+NAME : ROUND_R
+VERSION : 1.0
+
+
+VAR_INPUT
+  R_IN : REAL ;	    //Value to round
+  I_IN : INT ;	    //Decimal places to round
+END_VAR
+VAR_OUTPUT
+  R_OUT : REAL ;	//Rounded value
+END_VAR
+VAR_TEMP
+  R_DECIMAL_PLACE : REAL ;	
+  R_TEMP : REAL ;	
+END_VAR
+BEGIN
+NETWORK
+TITLE =Future...
+//Choose the way to round the value:
+//  CEIL
+//  FLOOR
+//  ROUND
+//  TRUNC
+
+
+NETWORK
+TITLE =Convet decimal places from int to real
+
+      CALL "I_R" (
+           I_IN                     := #I_IN,
+           R_OUT                    := #R_DECIMAL_PLACE);
+      NOP   0; 
+NETWORK
+TITLE =Calculate decimal places
+//Uses POW function from MATH library.
+//
+      CALL "POW" (
+           x                        := 1.000000e+001,
+           b                        := #R_DECIMAL_PLACE,
+           y                        := #R_DECIMAL_PLACE);
+      NOP   0; 
+NETWORK
+TITLE =Real rounded to n decimal places
+
+      L     #R_IN; 
+      L     #R_DECIMAL_PLACE; 
+      *R    ; // Multiply value to round * decimal places
+      RND   ; // Round to exclude values below defined decimal places
+      DTR   ; // Convert  Double Integer to Real
+      L     #R_DECIMAL_PLACE; 
+      /R    ; // Devide by defined decimal places
+      T     #R_OUT; 
+      SET   ; 
+      SAVE  ; 
+      CLR   ; 
+END_FUNCTION
+

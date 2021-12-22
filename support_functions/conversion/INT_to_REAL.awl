@@ -1,0 +1,55 @@
+FUNCTION "I_R" : VOID
+TITLE = CONVERT INT TO REAL
+
+//################################################################################
+//#                             CONVERT INT TO REAL                              #
+//################################################################################
+//
+//Revisions history
+//+--------------------------------------------------------------------------+
+//! 2 !        !                               !              !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//! 1 !22/12/21!ISSUE                          ! Leonardo     !              !
+//+---+--------+-------------------------------+--------------+--------------!
+//!Rev!Date    !Description                    !Drawn         !Checked       !
+//+--------------------------------------------------------------------------+
+//
+//Function         : This block converts a int value to a real value. 
+//                  Eg.: 168 = 168.0
+//                  Useful in place of many ITD / DTR instructions.
+//
+//Calling block    : ANY
+//
+//Used DB          : 
+//                     
+//Used Flags       : 
+// 
+//Used prog.block  : 
+//
+//Remarks          :
+
+
+AUTHOR : LEONARDO
+FAMILY : CONVERT
+NAME : I_R
+VERSION : 1.0
+
+
+VAR_INPUT
+  I_IN : INT ;	    //Int value to convert
+END_VAR
+VAR_OUTPUT
+  R_OUT : REAL ;	//Real value converted
+END_VAR
+BEGIN
+NETWORK
+TITLE =
+
+      L     #I_IN; 
+      ITD   ; 
+      DTR   ; 
+      T     #R_OUT; 
+      SET   ; 
+      SAVE  ; 
+END_FUNCTION
+
