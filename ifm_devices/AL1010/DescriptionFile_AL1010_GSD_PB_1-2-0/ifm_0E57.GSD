@@ -1,0 +1,1029 @@
+;**************************************************************
+; GSD-File for ifm electronic "IO-Link master Profibus 8 ports IP 67"
+; Article-No.      : AL1010
+; Hardware-Release : 01
+; Firmware-Release : 1.20
+; GSD-Revision     : 1.03
+; Date             : 04.03.2014
+;**************************************************************
+;****************** Changes ***********************************
+;  Date        GSD   Change
+;  05.03.2013  1.00  First Release   
+;  03.07.2013  1.01  Rename Slave_Family to AXL E
+;  27.09.2013  1.02  Fix structure of Ext_User_Prm_Data in 
+;                    Status/Control module; 
+;                    Change I/O data lengths of analog output
+;                    converters 
+;                    Rename "SIO IN" module in "DI with IO-Link
+;                    Add keyword for I&M support into 
+;                    "Status/Control" module
+;  04.03.2014  1.03  Add normed data format for RTD converters
+;                    Use IOLM master command as default fail safe 
+;                    behavior
+;**************************************************************
+
+#Profibus_DP
+GSD_REVISION = 5                   ; version ID of the GSD file format
+Vendor_Name = "ifm electronic"  	; manufacturer name
+Model_Name = "AL1010 IO-Link" ; device name
+Revision = "1.00"                  ; device revision
+Ident_Number = 0x0E57              ; product ID
+Slave_Family = 3@ifm electronic@FieldModuleDP  ; device family class
+Protocol_Ident = 0                 ; protocol ID of the device
+Station_Type = 0                   ; device type
+FMS_supp = 0                       ; no DP/FMS mixed device
+Hardware_Release = "02"            ; hardware revision
+Software_Release = "1.20"          ; software revision
+Bitmap_Device = "ifm0E57n"         ; device bitmap - normal state
+Info_Text = "IO-Link master Profibus 8 ports IP 67 GSD-Version: 1.02"
+OrderNumber = "AL1010"
+
+
+9.6_supp = 1                       ; supported baudrates
+19.2_supp = 1
+45.45_supp = 1
+93.75_supp = 1
+187.5_supp = 1
+500_supp = 1
+1.5M_supp = 1
+3M_supp = 1
+6M_supp = 1
+12M_supp = 1
+Auto_Baud_supp = 1
+
+MaxTsdr_9.6 = 60                   ; device respond times
+MaxTsdr_19.2 = 60
+MaxTsdr_45.45 = 60
+MaxTsdr_93.75 = 60
+MaxTsdr_187.5 = 60
+MaxTsdr_500 = 100
+MaxTsdr_1.5M = 150
+MaxTsdr_3M = 250
+MaxTsdr_6M = 450
+MaxTsdr_12M = 800
+
+Redundancy = 0                     ; no redundancy
+24V_Pins = 0                       ;
+
+Modul_Offset = 1                   ; 1. Slot number for HW config tool
+
+DPV1_Slave = 1                     ; device is a DPV1-Slave
+C1_Read_Write_supp = 1             ; Class1 Read/write supported
+C1_Response_Timeout = 1000         ; max time for C1 service response = 10s
+C1_Max_Data_Len = 240              ; max length of user data on C1 communication
+C2_Max_Count_Channels = 1          ; supporting one C2 channel
+C2_Read_Write_supp = 1             ; Class2 Read/write supported
+C2_Response_Timeout = 1000         ; max time for C2 service response = 10s
+C2_Max_Data_Len = 240              ; max length of user data on C2 communication
+C1_Read_Write_required = 0         ; no C1 read or write required for operation
+C2_Read_Write_required = 0         ; no C2 read or write required for operation
+Max_Initiate_PDU_Length = 64       ; max data length on C2 initiate (TODO:  244 ?)
+Diagnostic_Alarm_supp = 0          ; not supporting diagnostic alarm
+Process_Alarm_supp = 0             ; not supporting process alarm
+Pull_Plug_Alarm_supp = 0           ; not supporting pull/plug alarm
+Status_Alarm_supp = 0              ; not supporting status alarm
+Update_Alarm_supp = 0              ; not supporting update alarm
+Manufacturer_Specific_Alarm_supp = 0  ; not supporting manufacturer spec. alarm
+Extra_Alarm_SAP_supp = 0           ; no use of SAP50 for alarms
+Alarm_Sequence_Mode_Count = 0      ; not supporting alarm sequence mode
+Alarm_Type_Mode_supp=0             ; not supporting alarm type mode
+Diagnostic_Alarm_required = 0      ; device does not require diag alarm handling
+Process_Alarm_required = 0         ; device does not require process alarm handling
+Pull_Plug_Alarm_required = 0       ; device does not require pull/plug alarm handling
+Status_Alarm_required = 0          ; device does not require status alarm handling
+Update_Alarm_required = 0          ; device does not require update alarm handling
+Manufacturer_Specific_Alarm_required = 0  ; device does not require manuf. spec. alarm handling
+DPV1_Data_Types = 0                ; device does not use the extended identifier format
+WD_Base_1ms_supp = 0               ; device uses 10ms time base for watchdog
+Check_Cfg_Mode = 0                 ; no user specific Check_cfg_Mode
+Ident_Maintenance_supp = 1         ; supports I&M functions
+Freeze_Mode_supp = 1               ; Freeze is supported
+Sync_Mode_supp = 1                 ; Sync is supported
+Fail_Safe = 1                      ; device accepts failsafe telegrams
+Set_Slave_Add_supp  = 1            ; Set Slave address is supported
+Min_Slave_Intervall = 6            ; Min slave intervall
+Max_Diag_Data_Len   = 244          ; Max Diag data len
+Max_User_Prm_Data_Len = 237        ; Max user parameter data
+Ext_User_Prm_Data_Const(0) = 0xC0,0x00,0x00
+
+
+;**************************************************************
+;*********   modular device   *********************************
+;**************************************************************
+
+Modular_Station = 1                ; modular device
+Max_Module = 9                     ; max 9 modules (1xStatus/Control Modul + 8xPort Modul)
+Max_Input_Len = 244                ; max 244 Byte input data
+Max_Output_Len = 244               ; max 244 Byte output data
+Max_Data_Len = 488                 ; max sum: 488 Byte input and output data
+
+;**************************************************************
+;***  Parameter Text Definitions  *****************************
+;**************************************************************
+
+PrmText = 1
+Text(0) = "Free"
+Text(1) = "Synchrone"
+Text(2) = "Isochrone"
+EndPrmText
+
+PrmText = 2
+Text(0) = "Activated"
+Text(1) = "Deactivated"
+EndPrmText
+
+PrmText = 4
+Text(0) = "Clear all"
+Text(1) = "Set all"
+Text(2) = "Hold last value"
+Text(3) = "Switch replacement value"
+EndPrmText
+
+PrmText = 5
+Text(0) = "Inactive"
+Text(1) = "Digital Input"
+Text(2) = "Digital Output"
+Text(3) = "DI with IO-Link"
+Text(4) = "IO-Link"
+EndPrmText
+
+PrmText = 6
+Text(0) = "S7-compatible"
+Text(2) = "IB IL"
+EndPrmText
+
+PrmText = 7
+Text(0) = "No Filter"
+Text(1) = "4-sample mean-value"
+Text(2) = "16-sample mean-value"
+Text(3) = "32-sample mean-value"
+EndPrmText
+
+PrmText = 8
+Text(0) = "Output of zero value"
+Text(1) = "Output of final value"
+Text(2) = "Hold Last value"
+EndPrmText
+
+PrmText = 9
+Text(0) = "Pt 100 DIN"
+Text(1) = "Pt 1000 SAMA"
+Text(14) = "Linear R 0 - 500 Ohm"
+Text(15) = "Linear R 0 - 5000 Ohm"
+EndPrmText
+
+PrmText = 10
+Text(0) = "0.5°C / 0.2 Ohm / 2 Ohm"
+Text(2) = "0.5°F"
+EndPrmText
+
+PrmText = 12
+Text(0) = "Disabled"
+Text(1) = "Download only"
+Text(2) = "Upload only"
+Text(3) = "Download and Upload"
+Text(4) = "Disabled and Cleared"
+EndPrmText
+
+PrmText = 13
+Text(0) = "Clear all"
+Text(1) = "Set all"
+Text(2) = "Hold last Value"
+Text(4) = "IO-Link Master Command"
+EndPrmText
+
+PrmText = 14
+Text(0) = "S7-compatible"
+Text(2) = "IB IL"
+Text(1) = "Normed S7-compatible"
+Text(3) = "Normed IB IL"
+EndPrmText
+
+;**************************************************************
+;***  Parameter Data Options and Positions  *******************
+;**************************************************************
+ExtUserPrmData = 1 "Port Mode"
+BitArea(0-2) 0 0-0; Inactive
+Prm_Text_Ref = 5
+EndExtUserPrmData
+
+ExtUserPrmData = 2 "Port Mode"
+BitArea(0-2) 1 1-1 ; DI
+Prm_Text_Ref = 5
+EndExtUserPrmData
+
+ExtUserPrmData = 3 "Port Mode"
+BitArea(0-2) 2 2-2 ; DO
+Prm_Text_Ref = 5
+EndExtUserPrmData
+
+ExtUserPrmData = 4 "Port Mode"
+BitArea(0-2) 3 3-3 ; DI with IO-Link
+Prm_Text_Ref = 5
+EndExtUserPrmData
+
+ExtUserPrmData = 5 "Port Mode"
+BitArea(0-2) 4 4-4 ; IO-Link
+Prm_Text_Ref = 5
+EndExtUserPrmData
+
+ExtUserPrmData = 9 "Port Synchronization"
+BitArea(0-2) 0 0-0
+Prm_Text_Ref = 1
+EndExtUserPrmData
+
+ExtUserPrmData = 10 "Channel Related Diagnosis"
+Bit(0) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 11 "Status Messages"
+Bit(1) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 12 "IO-Link Master Status Diagnosis"
+Bit(2) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 13 "IO-Link Device Diagnosis Port 1"
+Bit(0) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 14 "IO-Link Device Diagnosis Port 2"
+Bit(1) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 15 "IO-Link Device Diagnosis Port 3"
+Bit(2) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 16 "IO-Link Device Diagnosis Port 4"
+Bit(3) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 17 "IO-Link Device Diagnosis Port 5"
+Bit(4) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 18 "IO-Link Device Diagnosis Port 6"
+Bit(5) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 19 "IO-Link Device Diagnosis Port 7"
+Bit(6) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 20 "IO-Link Device Diagnosis Port 8"
+Bit(7) 0 0-1
+Prm_Text_Ref = 2
+EndExtUserPrmData
+
+ExtUserPrmData = 21 "Data Storage" ; Setting of Data Storage for analog converters
+Bit(0) 0 0-0
+Prm_Text_Ref = 12
+EndExtUserPrmData
+
+ExtUserPrmData = 25 "Failsafe Behavior DO"
+BitArea(0-1) 0 0-3
+Prm_Text_Ref = 4
+EndExtUserPrmData
+
+ExtUserPrmData = 26 "Reserved"
+Unsigned8  0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 27 "Failsafe Pattern DO Pin 4"
+Unsigned8  0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 29 "VendorID 1 (MSB)"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 30 "VendorID 2 (LSB)"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 31 "DeviceID 1 (MSB)"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 32 "DeviceID 2"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 33 "DeviceID 3 (LSB)"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 34 "Data Storage"
+BitArea(0-2) 0 0-4
+Prm_Text_Ref = 12
+EndExtUserPrmData
+
+ExtUserPrmData = 35 "Device Parameter 0x10"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 36 "Device Parameter 0x11"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 37 "Device Parameter 0x12"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 38 "Device Parameter 0x13"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 39 "Device Parameter 0x14"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 40 "Device Parameter 0x15"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 41 "Device Parameter 0x16"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 42 "Device Parameter 0x17"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 43 "Device Parameter 0x18"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 44 "Device Parameter 0x19"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 45 "Device Parameter 0x1A"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 46 "Device Parameter 0x1B"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 47 "Device Parameter 0x1C"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 48 "Device Parameter 0x1D"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 49 "Device Parameter 0x1E"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 50 "Device Parameter 0x1F"
+Unsigned8 0 0-255
+EndExtUserPrmData
+
+ExtUserPrmData = 51 "Failsafe Behavior of Port 1"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 52 "Failsafe Behavior of Port 2"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 53 "Failsafe Behavior of Port 3"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 54 "Failsafe Behavior of Port 4"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 55 "Failsafe Behavior of Port 5"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 56 "Failsafe Behavior of Port 6"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 57 "Failsafe Behavior of Port 7"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 58 "Failsafe Behavior of Port 8"
+BitArea(0-2) 4 0-4
+Prm_Text_Ref = 13
+EndExtUserPrmData
+
+ExtUserPrmData = 59 "Format"
+BitArea(4-5) 0 0-2
+Prm_Text_Ref = 6
+EndExtUserPrmData
+
+ExtUserPrmData = 60 "Filter"
+BitArea(0-1) 0 0-3
+Prm_Text_Ref = 7
+EndExtUserPrmData
+
+ExtUserPrmData = 61 "Failure State"
+BitArea(6-7) 0 0-2
+Prm_Text_Ref = 8
+EndExtUserPrmData
+
+ExtUserPrmData = 62 "Sensor Type"
+BitArea(0-3) 0 0-15
+Prm_Text_Ref = 9
+EndExtUserPrmData
+
+ExtUserPrmData = 63 "Resolution"
+BitArea(6-7) 0 0-2
+Prm_Text_Ref = 10
+EndExtUserPrmData
+
+ExtUserPrmData = 64 "Format" ; RTD Converter
+BitArea(4-5) 0 0-3
+Prm_Text_Ref = 14
+EndExtUserPrmData
+
+ExtUserPrmData = 66 "VendorID 1 (MSB)" ; PxC
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 67 "VendorID 2 (LSB)" ; PxC
+Unsigned8 176 176-176
+EndExtUserPrmData
+
+ExtUserPrmData = 68 "DeviceID 1 (MSB)" ; AI1 U R
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 69 "DeviceID 2" ; AI1 U R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 70 "DeviceID 3 (LSB)" ; AI1 U R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 71 "DeviceID 1 (MSB)" ; AI1 I R
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 72 "DeviceID 2" ; AI1 I R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 73 "DeviceID 3 (LSB)" ; AI1 I R
+Unsigned8 20 20-20
+EndExtUserPrmData
+
+ExtUserPrmData = 74 "DeviceID 1 (MSB)" ; AO1 U R
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 75 "DeviceID 2" ; AO1 U R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 76 "DeviceID 3 (LSB)" ; AO1 U R
+Unsigned8 40 40-40
+EndExtUserPrmData
+
+ExtUserPrmData = 77 "DeviceID 1 (MSB)" ; AO1 I R
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 78 "DeviceID 2" ; AO1 I R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 79 "DeviceID 3 (LSB)" ; AO1 I R
+Unsigned8 60 60-60
+EndExtUserPrmData
+
+ExtUserPrmData = 80 "DeviceID 1 (MSB)" ; RTD1 R
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 81 "DeviceID 2" ; RTD1 R
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 82 "DeviceID 3 (LSB)" ; RTD1 R
+Unsigned8 80 80-80
+EndExtUserPrmData
+
+ExtUserPrmData = 83 "DeviceID 1 (MSB)" ; AI1 U S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 84 "DeviceID 2" ; AI1 U S
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 85 "DeviceID 3 (LSB)" ; AI1 U S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 86 "DeviceID 1 (MSB)" ; AI1 I S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 87 "DeviceID 2" ; AI1 I S
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 88 "DeviceID 3 (LSB)" ; AI1 I S
+Unsigned8 21 21-21
+EndExtUserPrmData
+
+ExtUserPrmData = 89 "DeviceID 1 (MSB)" ; AO1 U S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 90 "DeviceID 2" ; AO1 U S
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 91 "DeviceID 3 (LSB)" ; AO1 U S
+Unsigned8 41 41-41
+EndExtUserPrmData
+
+ExtUserPrmData = 92 "DeviceID 1 (MSB)" ; AO1 I S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 93 "DeviceID 2" ; AO1 I S
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 94 "DeviceID 3 (LSB)" ; AO1 I S
+Unsigned8 61 61-61
+EndExtUserPrmData
+
+ExtUserPrmData = 95 "DeviceID 1 (MSB)" ; RTD1 S
+Unsigned8 1 1-1
+EndExtUserPrmData
+
+ExtUserPrmData = 96 "DeviceID 2" ; RTD1 S
+Unsigned8 0 0-0
+EndExtUserPrmData
+
+ExtUserPrmData = 97 "DeviceID 3 (LSB)" ; RTD1 S
+Unsigned8 81 81-81
+EndExtUserPrmData
+
+;*************************************************************************
+;***           Module Definition                                       ***
+;*************************************************************************
+Module = "Status/Control" 0xC1, 0x83, 0x83, 0x01
+1
+Ident_Maintenance_supp = 1      ; supports I&M functions in this module
+Ext_Module_Prm_Data_Len = 18
+Ext_User_Prm_Data_Ref(0) = 9    ; Port Synchronization
+Ext_User_Prm_Data_Ref(1) = 10   ; Channel related diagnosis
+Ext_User_Prm_Data_Ref(1) = 11   ; Status Messages
+Ext_User_Prm_Data_Ref(1) = 12   ; IO-Link Master Status Diagnosis
+Ext_User_Prm_Data_Ref(2) = 13   ; IO-Link Device Diagnosis Port 1
+Ext_User_Prm_Data_Ref(2) = 14   ; IO-Link Device Diagnosis Port 2
+Ext_User_Prm_Data_Ref(2) = 15   ; IO-Link Device Diagnosis Port 3
+Ext_User_Prm_Data_Ref(2) = 16   ; IO-Link Device Diagnosis Port 4
+Ext_User_Prm_Data_Ref(2) = 17   ; IO-Link Device Diagnosis Port 5
+Ext_User_Prm_Data_Ref(2) = 18   ; IO-Link Device Diagnosis Port 6
+Ext_User_Prm_Data_Ref(2) = 19   ; IO-Link Device Diagnosis Port 7
+Ext_User_Prm_Data_Ref(2) = 20   ; IO-Link Device Diagnosis Port 8
+;Ext_User_Prm_Data_Ref(3)         RESERVED
+Ext_User_Prm_Data_Ref(4) = 25   ; FailSafe behavior DO
+;Ext_User_Prm_Data_Ref(5)         RESERVED
+;Ext_User_Prm_Data_Ref(6)         RESERVED
+Ext_User_Prm_Data_Ref(7) = 27   ; FailSafe Pattern DO	
+;Ext_User_Prm_Data_Ref(8)         RESERVED	
+Ext_User_Prm_Data_Ref(9)  = 51  ; FailSafe behavior Port 1
+Ext_User_Prm_Data_Ref(10) = 52  ; FailSafe behavior Port 2
+Ext_User_Prm_Data_Ref(11) = 53  ; FailSafe behavior Port 3
+Ext_User_Prm_Data_Ref(12) = 54  ; FailSafe behavior Port 4
+Ext_User_Prm_Data_Ref(13) = 55  ; FailSafe behavior Port 5
+Ext_User_Prm_Data_Ref(14) = 56  ; FailSafe behavior Port 6
+Ext_User_Prm_Data_Ref(15) = 57  ; FailSafe behavior Port 7
+Ext_User_Prm_Data_Ref(16) = 58  ; FailSafe behavior Port 8
+Ext_User_Prm_Data_Ref(17) = 26  ; Reserved
+EndModule
+
+Module = "Digital IN" 0x01, 0x02
+2
+Ext_Module_Prm_Data_Len = 1
+Ext_User_Prm_Data_Ref(0) = 2
+EndModule
+
+Module = "Digital OUT" 0x01, 0x03
+3
+Ext_Module_Prm_Data_Len = 1
+Ext_User_Prm_Data_Ref(0) = 3
+EndModule
+
+Module="DI with IO-Link" 0x01, 0x04
+4
+Ext_Module_Prm_Data_Len = 1
+Ext_User_Prm_Data_Ref(0) = 4
+EndModule
+
+Module = "IOL_I_1Byte" 0x41, 0x80, 0x05
+5
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_2Byte" 0x41, 0x81, 0x06
+6
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_3Byte" 0x41, 0x82, 0x07
+7
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_4Byte" 0x41, 0x83, 0x08
+8
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_8Byte" 0x41, 0x87, 0x09
+9
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_16Byte" 0x41, 0x8F, 0x0A
+10
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_24Byte" 0x41, 0x97, 0x0B
+11
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I_32Byte" 0x41, 0x9F, 0x0C
+12
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_1Byte" 0x81, 0x80, 0x0D
+13
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_2Byte" 0x81, 0x81, 0x0E
+14
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_3Byte" 0x81, 0x82, 0x0F
+15
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_4Byte" 0x81, 0x83, 0x10
+16
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_8Byte" 0x81, 0x87, 0x11
+17
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_16Byte" 0x81, 0x8F, 0x12
+18
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_24Byte" 0x81, 0x97, 0x13
+19
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_O_32Byte" 0x81, 0x9F, 0x14
+20
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_1/1Byte" 0xC1, 0x80, 0x80, 0x15
+21
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_2/2Byte" 0xC1, 0x81, 0x81, 0x16
+22
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_3/3Byte" 0xC1, 0x82, 0x82, 0x17
+23
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_4/4Byte" 0xC1, 0x83, 0x83, 0x18
+24
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_8/8Byte" 0xC1, 0x87, 0x87, 0x19
+25
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_16/16Byte" 0xC1, 0x8F, 0x8F, 0x1A
+26
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_24/24Byte" 0xC1, 0x97, 0x97, 0x1B
+27
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_32/32Byte" 0xC1, 0x9F, 0x9F, 0x1C
+28
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_4/1Byte" 0xC1, 0x80, 0x83, 0x1D
+29
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_1/4Byte" 0xC1, 0x83, 0x80, 0x1E
+30
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_8/2Byte" 0xC1, 0x81, 0x87, 0x1F
+31
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_2/8Byte" 0xC1, 0x87, 0x81, 0x20
+32
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_32/4Byte" 0xC1, 0x83, 0x9F, 0x21
+33
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "IOL_I/O_4/32Byte" 0xC1, 0x9F, 0x83, 0x22
+34
+Ext_Module_Prm_Data_Len = 7
+Ext_User_Prm_Data_Ref(0) = 5
+Ext_User_Prm_Data_Ref(1) = 29
+Ext_User_Prm_Data_Ref(2) = 30
+Ext_User_Prm_Data_Ref(3) = 31
+Ext_User_Prm_Data_Ref(4) = 32
+Ext_User_Prm_Data_Ref(5) = 33
+Ext_User_Prm_Data_Ref(6) = 34
+EndModule
+
+Module = "Deactivated" 0x01, 0x4B
+35
+Ext_Module_Prm_Data_Len = 1
+Ext_User_Prm_Data_Ref(0) = 1
+EndModule
+
+SlotDefinition
+Slot(1) = "IO-Link Master" 1 1
+Slot(2) = "Port 1" 2 2-35
+Slot(3) = "Port 2" 2 2-35
+Slot(4) = "Port 3" 2 2-35
+Slot(5) = "Port 4" 2 2-35
+Slot(6) = "Port 5" 2 2-35
+Slot(7) = "Port 6" 2 2-35
+Slot(8) = "Port 7" 2 2-35
+Slot(9) = "Port 8" 2 2-35
+EndSlotDefinition
+
+
+
+
