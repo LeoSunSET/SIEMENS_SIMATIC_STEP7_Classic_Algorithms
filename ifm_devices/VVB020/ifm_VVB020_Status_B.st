@@ -1,4 +1,4 @@
-FUNCTION "ifm_VVB020" : VOID
+FUNCTION "ifm_VVB020_sts_B" : VOID
 TITLE =Reads VVB020 raw data and returns it cleaned
 //Reads raw data from periphery input and transform to:
 //- Process values: Fatigue (v-RMS), Impact (a-Peak), Friction (a-RMS), 
